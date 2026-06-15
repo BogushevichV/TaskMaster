@@ -27,5 +27,5 @@ class TaskHistory(Base):
     user: Mapped["User"] = relationship(back_populates="history_entries")
 
 
-from app.models.task import Task
-from app.models.user import User
+from backend.app.models.task import Task
+from backend.app.models.user import User

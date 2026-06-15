@@ -47,5 +47,5 @@ class Task(Base):
     )
 
 
-from app.models.task_history import TaskHistory
-from app.models.user import User
+from backend.app.models.task_history import TaskHistory
+from backend.app.models.user import User
