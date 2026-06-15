@@ -18,9 +18,12 @@ API: http://127.0.0.1:8000/docs
 
 ```bash
 cd client
-pip install -r requirements.txt
-python -m app.main
+..\venv\Scripts\python.exe -m pip install -r requirements.txt
+..\venv\Scripts\python.exe -m app.main
 ```
+
+Перед запуском клиента должен работать бэкенд (см. выше).
+Логин — пользователь, созданный через `/docs` → POST `/api/v1/auth/register`.
 
 ## Структура
 

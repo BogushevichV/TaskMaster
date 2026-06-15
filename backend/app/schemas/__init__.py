@@ -1,11 +1,11 @@
-from app.schemas.task import (
+from backend.app.schemas.task import (
     TaskCreate,
     TaskHistoryRead,
     TaskListResponse,
     TaskRead,
     TaskUpdate,
 )
-from app.schemas.user import (
+from backend.app.schemas.user import (
     LoginRequest,
     PasswordResetConfirm,
     PasswordResetRequest,

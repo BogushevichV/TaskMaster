@@ -4,11 +4,11 @@ from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.models.enums import TaskStatus, UserRole
-from app.models.task import Task
-from app.models.task_history import TaskHistory
-from app.models.user import User
-from app.schemas.task import TaskCreate, TaskUpdate
+from backend.app.models.enums import TaskStatus, UserRole
+from backend.app.models.task import Task
+from backend.app.models.task_history import TaskHistory
+from backend.app.models.user import User
+from backend.app.schemas.task import TaskCreate, TaskUpdate
 
 
 async def get_task_by_id(db: AsyncSession, task_id: int) -> Task | None:

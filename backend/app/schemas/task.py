@@ -2,8 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.models.enums import TaskStatus
-from app.schemas.user import UserRead
+from backend.app.models.enums import TaskStatus
+from backend.app.schemas.user import UserRead
 
 
 class TaskBase(BaseModel):
