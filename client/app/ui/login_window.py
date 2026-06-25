@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
-    QFormLayout,
-    QHBoxLayout,
+    QFrame,
     QLabel,
     QLineEdit,
     QMessageBox,
@@ -23,32 +22,54 @@ class LoginWindow(QWidget):
     def __init__(self, db_factory) -> None:
         super().__init__()
         self._db_factory = db_factory
-        self.setWindowTitle("TaskMaster — Вход")
-        self.setMinimumWidth(400)
+        self.setWindowTitle("TaskMaster")
+        self.setFixedSize(420, 380)
 
-        self.api_url = QLineEdit(DEFAULT_API_URL)
+        # ── Card ──────────────────────────────────────────────
+        card = QFrame()
+        card.setObjectName("LoginCard")
+
+        title = QLabel("TaskMaster")
+        title.setObjectName("AppTitle")
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        subtitle = QLabel("Система управления задачами")
+        subtitle.setObjectName("AppSubtitle")
+        subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
         self.username = QLineEdit()
+        self.username.setPlaceholderText("Логин")
+        self.username.setMinimumHeight(40)
+
         self.password = QLineEdit()
+        self.password.setPlaceholderText("Пароль")
         self.password.setEchoMode(QLineEdit.EchoMode.Password)
-
-        form = QFormLayout()
-        form.addRow("API URL:", self.api_url)
-        form.addRow("Логин:", self.username)
-        form.addRow("Пароль:", self.password)
-
-        self.login_btn = QPushButton("Войти")
-        self.login_btn.clicked.connect(self._on_login)
+        self.password.setMinimumHeight(40)
         self.password.returnPressed.connect(self._on_login)
 
-        layout = QVBoxLayout(self)
-        layout.addWidget(QLabel("TaskMaster"))
-        layout.addLayout(form)
-        layout.addWidget(self.login_btn)
+        self.login_btn = QPushButton("Войти")
+        self.login_btn.setMinimumHeight(42)
+        self.login_btn.clicked.connect(self._on_login)
+
+        card_layout = QVBoxLayout(card)
+        card_layout.setSpacing(10)
+        card_layout.setContentsMargins(36, 36, 36, 36)
+        card_layout.addWidget(title)
+        card_layout.addWidget(subtitle)
+        card_layout.addSpacing(20)
+        card_layout.addWidget(self.username)
+        card_layout.addWidget(self.password)
+        card_layout.addSpacing(10)
+        card_layout.addWidget(self.login_btn)
+
+        # ── Root ──────────────────────────────────────────────
+        root = QVBoxLayout(self)
+        root.setContentsMargins(28, 28, 28, 28)
+        root.addWidget(card)
 
     def _on_login(self) -> None:
         username = self.username.text().strip()
         password = self.password.text()
-        api_url = self.api_url.text().strip().rstrip("/")
 
         if not username or not password:
             QMessageBox.warning(self, "Ошибка", "Введите логин и пароль")
@@ -56,7 +77,7 @@ class LoginWindow(QWidget):
 
         self.login_btn.setEnabled(False)
         try:
-            api = ApiClient(api_url)
+            api = ApiClient(DEFAULT_API_URL)
             api.login(username, password)
             user = api.get_me()
             session = Session(api=api, user=user, db_factory=self._db_factory)
