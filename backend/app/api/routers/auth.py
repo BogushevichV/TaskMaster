@@ -15,6 +15,7 @@ from backend.app.core.security import (
     verify_token,
 )
 from backend.app.crud.user import create_user, get_user_by_email, get_user_by_username
+from backend.app.services.email import send_password_reset_email
 from backend.app.models.user import User
 from backend.app.schemas.user import (
     LoginRequest,
@@ -107,7 +108,7 @@ async def password_reset_request(
         return {"message": "If the email exists, a reset link was sent"}
     token = secrets.token_urlsafe(32)
     _reset_tokens[token] = (user.email, datetime.now(timezone.utc) + timedelta(hours=1))
-    # TODO: send email via SMTP when configured
+    send_password_reset_email(user.email, token)
     return {"message": "If the email exists, a reset link was sent", "dev_token": token}
 
 
