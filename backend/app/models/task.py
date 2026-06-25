@@ -20,7 +20,7 @@ class Task(Base):
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     employee_notes: Mapped[str | None] = mapped_column(Text, nullable=True)
     status: Mapped[TaskStatus] = mapped_column(
-        Enum(TaskStatus, name="task_status"),
+        Enum(TaskStatus, name="task_status", values_callable=lambda obj: [e.value for e in obj]),
         default=TaskStatus.PENDING,
     )
     deadline: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
